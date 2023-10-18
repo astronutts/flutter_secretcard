@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secretcard/secretcard_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class QuestionScreen extends StatefulWidget {
   final int selectedPeople;
@@ -10,6 +11,7 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  final bool _isfilltext = false;
   List<String> checkedQuestions = [];
   final List<String> questions = [
     '제일 안 씻을 것 같은 사람?',
@@ -18,7 +20,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   ];
   List<bool> checkQuestion = [];
   Map<String, String> questionAnswers = {};
-  Map<String, String> extendquestionAnswers = {};
+
   final TextEditingController answerController = TextEditingController();
 
   void showAnswerDialog(String question) {
@@ -29,10 +31,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
-              Text(question),
-              TextField(
-                controller: answerController,
-                decoration: const InputDecoration(labelText: 'Answer'),
+              Text(
+                question,
+                style: const TextStyle(fontSize: 30),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextField(
+                  maxLines: 1,
+                  controller: answerController,
+                  decoration: const InputDecoration(
+                    labelText: 'Answer',
+                  ),
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -59,6 +70,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void initState() {
     super.initState();
     checkQuestion = List.filled(questions.length, false);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    answerController.dispose();
   }
 
   @override
@@ -106,7 +124,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             onPressed: () {
               while (questionAnswers.length < 12) {
                 questionAnswers[
-                        '${questionAnswers.length + 1} Do you want to know Answer?'] =
+                        '${questionAnswers.length + 1}. Do you want to know Answer?'] =
                     'Just one shot';
               }
               goPage(SecretCardScreen(
