@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SecretCardScreen extends StatefulWidget {
+  final String knowAnswer;
   final int selectedPeople;
   final Map<String, String> questionAnswers;
 
@@ -8,6 +10,7 @@ class SecretCardScreen extends StatefulWidget {
     Key? key,
     required this.selectedPeople,
     required this.questionAnswers,
+    required this.knowAnswer,
   }) : super(key: key);
 
   @override
@@ -16,7 +19,7 @@ class SecretCardScreen extends StatefulWidget {
 
 class _SecretCardScreenState extends State<SecretCardScreen> {
   List<MapEntry<String, String>> questionAnswerPairs = [];
-
+  int flipCount = 1;
   List<bool> isCardFlipped = [];
   int selectedCardIndex = -1;
 
@@ -29,27 +32,79 @@ class _SecretCardScreenState extends State<SecretCardScreen> {
   }
 
   void flipCard(int index) {
-    setState(() {
-      isCardFlipped[index] = !isCardFlipped[index];
+    if (flipCount < (widget.selectedPeople - 1) * 2) {
+      setState(() {
+        isCardFlipped[index] = true;
+        flipCount++;
+        print(flipCount);
+        print(widget.questionAnswers[questionAnswerPairs[index].key]);
 
-      if (isCardFlipped[index]) {
-        // Check if the selected card's answer matches the question's answer
-        if (widget.questionAnswers[questionAnswerPairs[index].value] ==
-            questionAnswerPairs[index].value) {
-          // Set the selected card index to trigger animation
+        if (widget.questionAnswers[questionAnswerPairs[index].key] ==
+            widget.knowAnswer) {
+          // User found the answer within the allowed flips
           selectedCardIndex = index;
+          // Show a "Congratulations" message
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Don\'t tell anyone else'),
+                content: Text('You found a secret : ${widget.knowAnswer}'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Play Again'),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
-      } else {
-        selectedCardIndex = -1; // Reset selected card index
-      }
-    });
+      });
+    } else {
+      // User did not find the answer within the allowed flips
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Game Over'),
+            content: const Text(
+                'You did not find the answer within the allowed flips.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Play Again'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.questionAnswers.keys.toList()[0]),
+        //automaticallyImplyLeading: false, 뒤로가기 불가능!
+        title: Text(
+          widget.questionAnswers.keys.toList()[0],
+          style: const TextStyle(
+            fontSize: 15,
+          ),
+        ),
       ),
       body: Column(
         children: [
