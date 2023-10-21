@@ -17,7 +17,10 @@ class SecretCardScreen extends StatefulWidget {
   _SecretCardScreenState createState() => _SecretCardScreenState();
 }
 
-class _SecretCardScreenState extends State<SecretCardScreen> {
+class _SecretCardScreenState extends State<SecretCardScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
   List<MapEntry<String, String>> questionAnswerPairs = [];
   int flipCount = 1;
   List<bool> isCardFlipped = [];
@@ -32,59 +35,61 @@ class _SecretCardScreenState extends State<SecretCardScreen> {
   }
 
   void flipCard(int index) {
-    if (flipCount < (widget.selectedPeople - 1) * 2) {
-      setState(() {
-        isCardFlipped[index] = true;
-        flipCount++;
-        print(flipCount);
-        print(widget.questionAnswers[questionAnswerPairs[index].key]);
+    if (!isCardFlipped[index]) {
+      if (flipCount < (widget.selectedPeople - 1) * 2) {
+        setState(() {
+          isCardFlipped[index] = true;
+          flipCount++;
+          print(flipCount);
+          print(widget.questionAnswers[questionAnswerPairs[index].key]);
 
-        if (widget.questionAnswers[questionAnswerPairs[index].key] ==
-            widget.knowAnswer) {
-          // User found the answer within the allowed flips
-          selectedCardIndex = index;
-          // Show a "Congratulations" message
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Don\'t tell anyone else'),
-                content: Text('You found a secret : ${widget.knowAnswer}'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Play Again'),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      });
-    } else {
-      // User did not find the answer within the allowed flips
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Game Over'),
-            content: const Text(
-                'You did not find the answer within the allowed flips.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Play Again'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-              ),
-            ],
-          );
-        },
-      );
+          if (widget.questionAnswers[questionAnswerPairs[index].key] ==
+              widget.knowAnswer) {
+            // User found the answer within the allowed flips
+            selectedCardIndex = index;
+            // Show a "Congratulations" message
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Don\'t tell anyone else'),
+                  content: Text('You found a secret : ${widget.knowAnswer}'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Play Again'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Game Over'),
+              content: const Text(
+                  'You did not find the answer within the allowed flips.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Play Again'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -122,22 +127,17 @@ class _SecretCardScreenState extends State<SecretCardScreen> {
 
                 return GestureDetector(
                   onTap: () => flipCard(index),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
-                    color:
-                        selectedCardIndex == index ? Colors.red : Colors.white,
-                    child: Card(
-                      child: Center(
-                        child: isCardFlipped[index]
-                            ? Text(
-                                answer,
-                                textAlign: TextAlign.center,
-                              )
-                            : const Text(
-                                'Tap to reveal',
-                                textAlign: TextAlign.center,
-                              ),
-                      ),
+                  child: Card(
+                    child: Center(
+                      child: isCardFlipped[index]
+                          ? Text(
+                              answer,
+                              textAlign: TextAlign.center,
+                            )
+                          : const Text(
+                              'Tap to reveal',
+                              textAlign: TextAlign.center,
+                            ),
                     ),
                   ),
                 );

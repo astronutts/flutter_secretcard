@@ -14,22 +14,32 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   List<String> checkedQuestions = [];
   final List<String> questions = [
-    '제일 잘생긴 사람? ',
-    '제일 안 씻을 것 같은 사람?',
+    '제일 잘생긴 사람은? ',
+    '제일 안 씻을 것 같은 사람은?',
     '첫인상과 지금이 가장 다른 사람은?',
+    '성적 취향이 독특할 것 같은 사람은?',
     '가장 매력있는 사람은?',
+    '거짓말을 가장 잘할 것 같은 사람은?',
     '연애를 가장 잘할 것 같은 사람은?',
     '가장 맘에 드는 사람은?',
     '단둘이 있으면 가장 어색한 사람은?',
     '친구 이상으로는 절대 생각할 수 없는 사람은?',
     'X의 SNS를 들어가볼 것 같은 사람은?',
     '돈에 굉장히 인색할 것 같은 사람은?',
-    '가장 꼰대 같은 사람은?'
+    '가장 꼰대 같은 사람은?',
+    '옷을 환불할 때 같이 가고 싶은 사람은?',
+    '생각없이 살 것 같은 사람은?',
+    '군대 선임으로 만나면 큰일날 것 같은 사람은?',
+    '결혼을 제일 빨리 할 것 같은 사람은?',
+    '가장 눈치가 없어 보이는 사람은?',
+    '가장 의리가 있을 것 같은 사람은?',
+    '여기서 가장 짠돌이/짠순이는?'
   ];
   List<bool> checkQuestion = [];
   Map<String, String> questionAnswers = {};
 
   final TextEditingController answerController = TextEditingController();
+  final TextEditingController addQuestionController = TextEditingController();
 
   void showAnswerDialog(String question) {
     showDialog(
@@ -97,6 +107,76 @@ class _QuestionScreenState extends State<QuestionScreen> {
       },
     );
   }
+
+  // void addQuestionDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16.0),
+  //         ),
+  //         elevation: 0.0,
+  //         backgroundColor: Colors.transparent,
+  //         child: Container(
+  //           padding: const EdgeInsets.all(16),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(16.0),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: <Widget>[
+  //               const Text(
+  //                 "어떤 비밀이 궁금하세요?",
+  //                 style: TextStyle(
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.bold,
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 10),
+  //               TextField(
+  //                 maxLines: 1,
+  //                 controller: addQuestionController,
+  //                 decoration: const InputDecoration(
+  //                   labelStyle: TextStyle(color: Colors.red),
+  //                   focusedBorder: UnderlineInputBorder(
+  //                     borderSide: BorderSide(
+  //                       color: Colors.black,
+  //                     ),
+  //                   ),
+  //                   labelText: 'Question',
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 20),
+  //               ElevatedButton(
+  //                 style: ButtonStyle(
+  //                     backgroundColor: MaterialStateProperty.all(Colors.black)),
+  //                 onPressed: () {
+  //                   final newQuestion = addQuestionController.text;
+  //                   questions.add(newQuestion);
+  //                   while (checkQuestion.length < questions.length) {
+  //                     checkQuestion.add(false);
+  //                   }
+
+  //                   answerController.clear();
+  //                   Navigator.pop(context);
+  //                 },
+  //                 child: const Text(
+  //                   'Submit Question',
+  //                   style: TextStyle(
+  //                     color: Colors.red,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void goPage(Widget page) {
     Navigator.of(context).push(
@@ -207,6 +287,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     size: 32.0,
                   ),
                 ),
+                // IconButton(
+                //   onPressed: () {
+                //     addQuestionDialog();
+                //   },
+                //   icon: const Icon(
+                //     Icons.add_circle_rounded, // 사용자 정의 아이콘으로 변경 가능
+                //     color: Colors.black,
+                //     size: 32.0,
+                //   ),
+                // ),
                 IconButton(
                   onPressed: () {
                     var knowAnswer = questionAnswers.values.first;
@@ -231,7 +321,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 // You can add more buttons or customize the design here
               ],
             ),
-          )
+          ),
         ],
       ),
     );
