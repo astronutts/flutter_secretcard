@@ -193,7 +193,7 @@ class _ChoosePeopleScreenState extends State<ChoosePeopleScreen>
                     onPressed: () {
                       Navigator.of(context).push(_createRoute());
                     },
-                    buttonColor: Colors.black, // 버튼 색상 변경
+                    buttonColor: Colors.black,
                   ),
                 );
               },

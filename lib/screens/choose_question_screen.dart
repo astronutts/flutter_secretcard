@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secretcard/componant/custom_button.dart';
 import 'package:flutter_secretcard/screens/secretcard_screen.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -49,14 +48,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          elevation: 0.0,
+          elevation: 5.0,
           backgroundColor: Colors.transparent,
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.0),
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 5,
+                    offset: Offset(10, 10),
+                  )
+                ]),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

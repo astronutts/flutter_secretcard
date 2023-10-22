@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secretcard/screens/show_hiddencard_screen.dart';
+
+import '../componant/custom_button.dart';
+import 'check_hiddencard_screen.dart';
 
 class SecretCardScreen extends StatefulWidget {
   final String knowAnswer;
@@ -19,12 +23,13 @@ class SecretCardScreen extends StatefulWidget {
 
 class _SecretCardScreenState extends State<SecretCardScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
   List<MapEntry<String, String>> questionAnswerPairs = [];
   int flipCount = 1;
   List<bool> isCardFlipped = [];
   int selectedCardIndex = -1;
+  late AnimationController _controller = AnimationController(vsync: this);
+  late Animation<double> _animation;
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -32,11 +37,24 @@ class _SecretCardScreenState extends State<SecretCardScreen>
 
     questionAnswerPairs = widget.questionAnswers.entries.toList()..shuffle();
     isCardFlipped = List.filled(questionAnswerPairs.length, false);
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    // Animation
+    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _pageController = PageController(
+      initialPage: 0,
+    )..addListener(() {
+        setState(() {});
+      });
   }
 
   void flipCard(int index) {
     if (!isCardFlipped[index]) {
-      if (flipCount < (widget.selectedPeople - 1) * 2) {
+      if (flipCount <= (widget.selectedPeople - 1) * 2) {
         setState(() {
           isCardFlipped[index] = true;
           flipCount++;
@@ -108,6 +126,7 @@ class _SecretCardScreenState extends State<SecretCardScreen>
           widget.questionAnswers.keys.toList()[0],
           style: const TextStyle(
             fontSize: 15,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -122,7 +141,7 @@ class _SecretCardScreenState extends State<SecretCardScreen>
               ),
               itemCount: questionAnswerPairs.length,
               itemBuilder: (context, index) {
-                final question = questionAnswerPairs[index].key;
+                //final question = questionAnswerPairs[index].key;
                 final answer = questionAnswerPairs[index].value;
 
                 return GestureDetector(
@@ -146,6 +165,60 @@ class _SecretCardScreenState extends State<SecretCardScreen>
           ),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+          child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return CustomButton(
+            controller: _controller,
+            text: 'Hidden Card',
+            onPressed: () {
+              showModalBottomSheet(
+                barrierColor: Colors.black,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(42),
+                    topRight: Radius.circular(42),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return SizedBox(
+                    height: 200,
+                    child: PageView(
+                      pageSnapping: true,
+                      controller: _pageController,
+                      children: [
+                        const Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(42),
+                                topRight: Radius.circular(42),
+                              ),
+                            ),
+                            child: CheckHiddenCardScreen()),
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(42),
+                              topRight: Radius.circular(42),
+                            ),
+                          ),
+                          child: ShowHiddenCardScreen(
+                            knowAnswer: widget.knowAnswer,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            buttonColor: Colors.black,
+          );
+        },
+      )),
     );
   }
 }
