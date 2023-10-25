@@ -1,4 +1,4 @@
-package com.example.flutter_secretcard
+package com.sungjun.flutter.secretcard
 
 import io.flutter.embedding.android.FlutterActivity
 

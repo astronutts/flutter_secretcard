@@ -31,6 +31,18 @@ class _SecretCardScreenState extends State<SecretCardScreen>
   late Animation<double> _animation;
   late PageController _pageController;
 
+  List<Color> cardColors = [
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.pinkAccent,
+    Colors.blue,
+    Colors.green,
+    Colors.indigo,
+    Colors.purple,
+    Colors.black,
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -70,11 +82,11 @@ class _SecretCardScreenState extends State<SecretCardScreen>
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: const Text('Don\'t tell anyone else'),
-                  content: Text('You found a secret : ${widget.knowAnswer}'),
+                  title: const Text('아무에게도 말하지 마세요!!'),
+                  content: Text('질문의 답 : ${widget.knowAnswer}'),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('Play Again'),
+                      child: const Text('게임 다시하기'),
                       onPressed: () {
                         Navigator.of(context).pop();
                         Navigator.of(context)
@@ -92,16 +104,45 @@ class _SecretCardScreenState extends State<SecretCardScreen>
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('Game Over'),
-              content: const Text(
-                  'You did not find the answer within the allowed flips.'),
+              title: const Text(
+                'Game Over',
+                textAlign: TextAlign.center,
+              ),
+              content: const Text('당신은 비밀을 알아내지 못했습니다.'),
               actions: <Widget>[
-                TextButton(
-                  child: const Text('Play Again'),
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   },
+                  child: Container(
+                    height: 50,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 5,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+                    child: const Text(
+                      textAlign: TextAlign.center,
+                      '게임 다시하기',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ],
             );
@@ -121,6 +162,7 @@ class _SecretCardScreenState extends State<SecretCardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         //automaticallyImplyLeading: false, 뒤로가기 불가능!
         title: Text(
           widget.questionAnswers.keys.toList()[0],
@@ -143,10 +185,12 @@ class _SecretCardScreenState extends State<SecretCardScreen>
               itemBuilder: (context, index) {
                 //final question = questionAnswerPairs[index].key;
                 final answer = questionAnswerPairs[index].value;
+                Color cardColor = cardColors[index % cardColors.length];
 
                 return GestureDetector(
                   onTap: () => flipCard(index),
                   child: Card(
+                    color: cardColor,
                     child: Center(
                       child: isCardFlipped[index]
                           ? Text(
@@ -155,6 +199,11 @@ class _SecretCardScreenState extends State<SecretCardScreen>
                             )
                           : const Text(
                               'Tap to reveal',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                     ),

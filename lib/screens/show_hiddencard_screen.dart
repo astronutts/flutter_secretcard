@@ -20,6 +20,21 @@ class ShowHiddenCardScreen extends StatelessWidget {
               ),
             ),
           ),
+          Center(
+            child: TextButton(
+              child: const Text(
+                'Play Again',
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          )
         ],
       ),
     );

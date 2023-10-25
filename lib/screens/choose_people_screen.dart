@@ -62,7 +62,7 @@ class _ChoosePeopleScreenState extends State<ChoosePeopleScreen>
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0, 1);
         const end = Offset.zero;
-        const curve = Curves.easeInOut;
+        const curve = Curves.fastOutSlowIn;
         var tween =
             Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
@@ -81,7 +81,7 @@ class _ChoosePeopleScreenState extends State<ChoosePeopleScreen>
     // Animation controller
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500),
     );
 
     // Animation
@@ -126,7 +126,7 @@ class _ChoosePeopleScreenState extends State<ChoosePeopleScreen>
                 return Transform.scale(
                   scale: 1 + 0.1 * _animation.value,
                   child: const Text(
-                    'Choose People',
+                    'Player Number',
                     style: TextStyle(fontSize: 30),
                   ),
                 );
@@ -201,30 +201,40 @@ class _ChoosePeopleScreenState extends State<ChoosePeopleScreen>
           ),
           Positioned(
             top: 320,
-            right: 25,
+            right: 15,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
                   onTap: decreaseNumber,
                   child: Container(
+                    width: 55,
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.all(10),
-                    child: const FaIcon(Icons.remove),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 16,
+                    ),
+                    child: const FaIcon(
+                      Icons.remove,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 20),
                 GestureDetector(
                   onTap: increaseNumber,
                   child: Container(
+                    width: 55,
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 16,
+                    ),
                     child: const FaIcon(Icons.add),
                   ),
                 ),

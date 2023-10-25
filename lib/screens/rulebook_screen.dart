@@ -38,11 +38,11 @@ class RuleBook extends StatelessWidget {
                     decoration: TextDecoration.underline,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                    color: Colors.black,
                   ),
                 ),
                 Text(
-                  '는 아주 단순합니다',
+                  '는 아주 단순합니다  \u{1f60a}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class RuleBook extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: const Text(
-                '2. 질문자는 질문을 고르고 질문에 답을 할 사람을 고릅니다. ',
+                '2. 질문자는 질문을 고르고 질문에 답을 할 사람을 고릅니다. (궁금한 질문이 따로 있다면 아래 + 버튼을 눌러 하고 싶은 질문을 만들고, 답변도 받아요 \u{2705}',
                 style: TextStyle(
                   fontSize: 15,
                 ),
@@ -78,12 +78,12 @@ class RuleBook extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 230,
+            top: 270,
             left: 20,
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: const Text(
-                '3. 지목당한 사람은 질문에 대한 답을 같이 플레이를 하는 사람들 중에 한명의 이름을 적습니다.',
+                '3. 지목당한 사람은 질문에 대한 답을 같이 플레이를 하는 사람들 중에 한명의 이름을 적습니다. \u{1f381}',
                 style: TextStyle(
                   fontSize: 15,
                 ),
@@ -91,12 +91,12 @@ class RuleBook extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 280,
+            top: 320,
             left: 20,
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: const Text(
-                '4. 플레이어들은 돌아가면서 답이 적혀있는 카드를 뒤집습니다.',
+                '4. 플레이어들은 돌아가면서 카드를 뒤집습니다.',
                 style: TextStyle(
                   fontSize: 15,
                 ),
@@ -104,12 +104,12 @@ class RuleBook extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 280,
+            top: 350,
             left: 20,
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: const Text(
-                '4. 플레이어들은 돌아가면서 답이 적혀있는 카드를 뒤집습니다.',
+                '5. 모두에게는 2번의 기회가 있지만, 2번을 모두 소모할 시 게임은 끝이 납니다. \u{1F4A3}',
                 style: TextStyle(
                   fontSize: 15,
                 ),
@@ -117,25 +117,12 @@ class RuleBook extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 330,
+            top: 400,
             left: 20,
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: const Text(
-                '5. 모두에게는 2번의 기회가 있지만, 2번을 모두 소모할 시 게임은 끝이 납니다.',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 380,
-            left: 20,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width - 30,
-              child: const Text(
-                '6. 단, 너무나 비밀이 궁금하다면 Hidden Card 버튼을 통해 모두가 동의한 벌칙을 받고 비밀을 알 수 있습니다.',
+                '6. 단, 너무나 비밀이 궁금하다면 Hidden Card 버튼을 통해 모두가 동의한 벌칙을 받고 비밀을 알 수 있습니다. \u{1f631}',
                 style: TextStyle(
                   fontSize: 15,
                 ),
